@@ -2,10 +2,20 @@
 
 void PrimeChecker::run()
 {
-	int currentValue = 2 + id;
-	//for(int i = 0; i < )
+	int startingDivisor = 2 + id;
+	int currentDivisor;
 
-	do {}
-		while(currentValue <= givenNumber)
+	
+	for (int index = startingDivisor; index < givenNumber; index += interval)
+	{
+		currentDivisor = (interval * index) + (2 + id);
+		if (givenNumber % currentDivisor == 0)
+		{
+			isPrime = false;
+			break;
+		}
+	}
+
+	isFinished = true;
 
 }
