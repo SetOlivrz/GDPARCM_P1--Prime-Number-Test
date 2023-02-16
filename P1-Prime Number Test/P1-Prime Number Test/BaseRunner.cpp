@@ -8,12 +8,13 @@ const sf::Time BaseRunner::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
 BaseRunner::BaseRunner()
 {
 	//load initial textures
-
 }
 
-void BaseRunner::run() {
+void BaseRunner::run() 
+{
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
 	while (this->window.isOpen())
 	{
 		sf::Time elapsedTime = clock.restart();
