@@ -1,5 +1,6 @@
 #pragma once
 #include "IETThread.h"
+#include <vector>
 class PrimeChecker : public IETThread
 {
 public:
@@ -9,6 +10,7 @@ public:
 	int givenNumber;
 	bool isPrime = true;
 	bool isFinished = false;
+	std::vector<int> divisorList;
 	// Inherited via IETThread
 	virtual void run() override;
 

@@ -15,14 +15,14 @@ void PrimeChecker::run()
 	//sleep(200);
 
 	//int startingDivisor = 2 + id;
-	int currentDivisor;
+	int currentDivisor = 1;
 
 	
-	for (int index = 0; index < givenNumber; index += interval)
+	for (int index = 0; currentDivisor + interval < givenNumber; index ++)
 	{
 		currentDivisor = (interval * index) + (2 + id);
-		//std::cout << "Current Divisor" << currentDivisor << std::endl;
-
+		//std::cout <<"Thread: " << id << "| Current Divisor" << currentDivisor << std::endl;
+		divisorList.push_back(currentDivisor);
 		if (givenNumber % currentDivisor == 0 && currentDivisor != givenNumber)
 		{
 			isPrime = false;
@@ -36,5 +36,6 @@ void PrimeChecker::run()
 
 	isFinished = true;
 
+	
 
 }
