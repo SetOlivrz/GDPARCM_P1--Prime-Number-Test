@@ -32,38 +32,39 @@ void BaseRunner::run()
 
 	do {
 		isAllFinished = true;
-
+		cout << testNumber << " still computing\n";
 		for (int i = 0; i < checkerThreadList.size(); i++)
 		{
 			// modify the value when not Finished
 			if (!checkerThreadList[i]->isFinished)
 			{
 				isAllFinished = false;
-				cout << testNumber + " still computing\n";
+				
 				break;
 			}
 		}
 
+
 	} while (!isAllFinished);
 
-	isAPrimeNumber = false;
+	isAPrimeNumber = true;
 	for (int i = 0; i < checkerThreadList.size(); i++)
 	{
 		// modify the value when false
 		if (!checkerThreadList[i]->isPrime)
 		{
-			isAPrimeNumber = checkerThreadList[i]->isPrime;
+			isAPrimeNumber = false;
 		}
 	}
 
 
 	if (isAPrimeNumber)
 	{
-		cout << testNumber + " is a Prime Number\n";
+		cout << testNumber << " is a Prime Number\n";
 	}
 	else
 	{
-		cout << testNumber + " is NOT a Prime Number\n";
+		cout << testNumber << " is NOT a Prime Number\n";
 	}
 }
 void BaseRunner::processEvents()
