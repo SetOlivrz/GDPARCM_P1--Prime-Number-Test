@@ -12,6 +12,8 @@ PrimeChecker::PrimeChecker(int id, int interval, int given)
 
 void PrimeChecker::run()
 {
+	//sleep(200);
+
 	//int startingDivisor = 2 + id;
 	int currentDivisor;
 

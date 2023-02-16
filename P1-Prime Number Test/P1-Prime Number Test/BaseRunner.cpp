@@ -15,6 +15,13 @@ void BaseRunner::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
+	sf::Time startTime;
+	sf::Time endTime;
+
+	sf::Time timeTaken;
+
+	bool isAllFinished;
+
 
 	for (int i = 0; i < nThreads; i++)
 	{
@@ -28,8 +35,11 @@ void BaseRunner::run()
 
 	}
 
-	bool isAllFinished;
 
+
+
+
+	startTime = clock.getElapsedTime();
 	do {
 		isAllFinished = true;
 		cout << testNumber << " still computing\n";
@@ -46,6 +56,13 @@ void BaseRunner::run()
 
 
 	} while (!isAllFinished);
+	endTime = clock.getElapsedTime();
+
+	timeTaken = endTime - startTime;
+
+	endTime = startTime;
+
+
 
 	isAPrimeNumber = true;
 	for (int i = 0; i < checkerThreadList.size(); i++)
@@ -60,12 +77,13 @@ void BaseRunner::run()
 
 	if (isAPrimeNumber)
 	{
-		cout << testNumber << " is a Prime Number\n";
+		cout << testNumber << " is a Prime Number | "<< timeTaken.asMilliseconds()<<" ms| Threads: "<< nThreads<<"\n";
 	}
 	else
 	{
-		cout << testNumber << " is NOT a Prime Number\n";
+		cout << testNumber << " is NOT a Prime Number | " << timeTaken.asMilliseconds() << " ms| Threads: " << nThreads << "\n";
 	}
+	
 }
 void BaseRunner::processEvents()
 {
