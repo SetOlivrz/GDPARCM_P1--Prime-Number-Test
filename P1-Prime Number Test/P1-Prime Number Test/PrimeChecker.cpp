@@ -1,5 +1,13 @@
 #include "PrimeChecker.h"
 
+PrimeChecker::PrimeChecker(int id, int interval, int given)
+{
+	// initialize thread attributes
+	this->id = id;
+	this->interval = interval;
+	this->givenNumber = given;
+}
+
 void PrimeChecker::run()
 {
 	int startingDivisor = 2 + id;
@@ -12,10 +20,10 @@ void PrimeChecker::run()
 		if (givenNumber % currentDivisor == 0)
 		{
 			isPrime = false;
-			break;
 		}
 	}
 
 	isFinished = true;
+
 
 }

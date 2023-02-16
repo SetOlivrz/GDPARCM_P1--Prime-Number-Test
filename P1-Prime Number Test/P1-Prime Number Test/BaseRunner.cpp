@@ -10,41 +10,75 @@ BaseRunner::BaseRunner()
 	//load initial textures
 }
 
-void BaseRunner::run() 
+void BaseRunner::run()
 {
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-	while (this->window.isOpen())
-	{
-		sf::Time elapsedTime = clock.restart();
-		timeSinceLastUpdate += elapsedTime;
-		while (timeSinceLastUpdate > TIME_PER_FRAME)
-		{
-			timeSinceLastUpdate -= TIME_PER_FRAME;
 
-			processEvents();
-			//update(TIME_PER_FRAME);
-			update(elapsedTime);
+	for (int i = 0; i < nThreads; i++)
+	{
+		// instantiate Prime checker
+		PrimeChecker* checkerInstance = new PrimeChecker(i, nThreads, testNumber);
+		// added check in list
+		checkerThreadList.push_back(checkerInstance);
+
+		// run thread
+		checkerThreadList[i]->start();
+
+	}
+
+	bool isAllFinished;
+
+	do {
+		isAllFinished = true;
+
+		for (int i = 0; i < checkerThreadList.size(); i++)
+		{
+			// modify the value when not Finished
+			if (!checkerThreadList[i]->isFinished)
+			{
+				isAllFinished = false;
+				cout << testNumber + " still computing\n";
+				break;
+			}
 		}
 
-		render();
+	} while (!isAllFinished);
+
+	isAPrimeNumber = false;
+	for (int i = 0; i < checkerThreadList.size(); i++)
+	{
+		// modify the value when false
+		if (!checkerThreadList[i]->isPrime)
+		{
+			isAPrimeNumber = checkerThreadList[i]->isPrime;
+		}
+	}
+
+
+	if (isAPrimeNumber)
+	{
+		cout << testNumber + " is a Prime Number\n";
+	}
+	else
+	{
+		cout << testNumber + " is NOT a Prime Number\n";
 	}
 }
-
 void BaseRunner::processEvents()
 {
-	//sf::Event event;
-	//if (this->window.pollEvent(event)) {
-	//	switch (event.type) {
-	//	
-	//	default: GameObjectManager::getInstance()->processInput(event); break;
-	//	case sf::Event::Closed:
-	//		this->window.close();
-	//		break;
+//	for (int i = 0; i < nThreads; i++)
+//	{
+//		// create thread
+//		// instantiate thread (number range)
+//		// add thread to list
+//		// thread start
+//
+//
+//	}
 
-	//	}
-	//}
+	//display output + processing time
 }
 
 void BaseRunner::update(sf::Time elapsedTime) 

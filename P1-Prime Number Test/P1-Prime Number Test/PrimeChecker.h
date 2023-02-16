@@ -7,7 +7,7 @@ public:
 	int id;
 	int interval;
 	int givenNumber;
-	bool isPrime = false;
+	bool isPrime = true;
 	bool isFinished = false;
 	// Inherited via IETThread
 	virtual void run() override;
