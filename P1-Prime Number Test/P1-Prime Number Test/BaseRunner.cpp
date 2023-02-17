@@ -71,13 +71,13 @@ void BaseRunner::run()
 		}
 	}
 
-	/*for (int i = 0; i < checkerThreadList.size(); i++)
+	for (int i = 0; i < checkerThreadList.size(); i++)
 	{
 		for (int j = 0; j < checkerThreadList[i]->divisorList.size(); j++)
 		{
 			std::cout << "Thread: " << checkerThreadList[i]->id << " | Divisor: " << checkerThreadList[i]->divisorList[j] << std::endl;
 		}
-	}*/
+	}
 	
 
 	if (isAPrimeNumber)

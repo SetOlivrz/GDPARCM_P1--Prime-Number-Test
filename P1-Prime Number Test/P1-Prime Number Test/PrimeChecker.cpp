@@ -12,14 +12,14 @@ PrimeChecker::PrimeChecker(int id, int interval, int given)
 
 void PrimeChecker::run()
 {
-	sleep(500);
+	IETThread::sleep(500);
 
 	int startingDivisor = 2 + id;
 	//int currentDivisor = 1;
 
 	//int i = 0;
 	//std::cout << "Thread: " << id << "| Current Divisor" << startingDivisor << std::endl;
-	for (int currentDivisor = startingDivisor; currentDivisor + interval < givenNumber; currentDivisor += interval)
+	for (int currentDivisor = startingDivisor; currentDivisor < givenNumber; currentDivisor += interval)
 	{
 		//currentDivisor = (interval * index) + (2 + id);
 		//std::cout <<"Thread: " << id << "| Current Divisor" << currentDivisor << std::endl;
