@@ -23,7 +23,7 @@ void PrimeChecker::run()
 		//divisorList.push_back(currentDivisor);
 
 		// prime checker
-		if (givenNumber % currentDivisor == 0 && currentDivisor != givenNumber)
+		if (givenNumber % currentDivisor == 0 && currentDivisor < givenNumber)
 		{
 			isPrime = false;
 		}

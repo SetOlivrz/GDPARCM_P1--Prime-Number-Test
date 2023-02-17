@@ -10,8 +10,8 @@ BaseRunner::BaseRunner()
 	// TEST VALUES
 	// int = 2147483647 (max)
 	// long = (max)
-	this->nThreads = 1;
-	this->testNumber = 2147483647;
+	this->nThreads = 2;
+	this->testNumber = 1000000;
 }
 
 void BaseRunner::run()

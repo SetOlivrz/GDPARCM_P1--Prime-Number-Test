@@ -24,8 +24,8 @@ private:
 
 	vector<PrimeChecker*>checkerThreadList;
 
-	int nThreads = 1;
-	int testNumber = 100;
+	int nThreads = 0;
+	int testNumber = 0;
 	bool isAPrimeNumber = false;
 };
 
