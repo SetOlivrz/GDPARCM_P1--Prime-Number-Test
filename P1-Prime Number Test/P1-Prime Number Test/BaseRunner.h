@@ -18,13 +18,14 @@ private:
 	sf::RenderWindow window;
 
 	void render();
+	void displayDivisorsPerThread();
 	void processEvents();
 	void update(sf::Time elapsedTime);
 
 	vector<PrimeChecker*>checkerThreadList;
 
-	int nThreads = 2;
-	int testNumber = 2147483647;
+	int nThreads = 1;
+	int testNumber = 100;
 	bool isAPrimeNumber = false;
 };
 

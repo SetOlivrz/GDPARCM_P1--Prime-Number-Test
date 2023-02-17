@@ -7,7 +7,11 @@ const sf::Time BaseRunner::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
 
 BaseRunner::BaseRunner()
 {
-	//load initial textures
+	// TEST VALUES
+	// int = 2147483647 (max)
+	// long = (max)
+	this->nThreads = 1;
+	this->testNumber = 2147483647;
 }
 
 void BaseRunner::run()
@@ -15,10 +19,11 @@ void BaseRunner::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-	sf::Time startTime;
-	sf::Time endTime;
+	sf::Time startTime = sf::Time::Zero;
+	sf::Time endTime = sf::Time::Zero;
 
-	sf::Time timeTaken;
+	// elapsed time for the computation process
+	sf::Time timeTaken = sf::Time::Zero;
 
 	bool isAllFinished;
 
@@ -27,15 +32,14 @@ void BaseRunner::run()
 	{
 		// instantiate Prime checker
 		PrimeChecker* checkerInstance = new PrimeChecker(i, nThreads, testNumber);
-		// added check in list
+		// add in thread list
 		checkerThreadList.push_back(checkerInstance);
-
 		// run thread
 		checkerThreadList[i]->start();
 
 	}
 
-
+	// start time
 	startTime = clock.getElapsedTime();
 	do {
 		isAllFinished = true;
@@ -50,11 +54,12 @@ void BaseRunner::run()
 				break;
 			}
 		}
-
-
 	} while (!isAllFinished);
+
+	// end time
 	endTime = clock.getElapsedTime();
 
+	// compute total time elapsed
 	timeTaken = endTime - startTime;
 
 	endTime = startTime;
@@ -71,15 +76,12 @@ void BaseRunner::run()
 		}
 	}
 
-	for (int i = 0; i < checkerThreadList.size(); i++)
-	{
-		for (int j = 0; j < checkerThreadList[i]->divisorList.size(); j++)
-		{
-			std::cout << "Thread: " << checkerThreadList[i]->id << " | Divisor: " << checkerThreadList[i]->divisorList[j] << std::endl;
-		}
-	}
-	
+	// display thread divisors (Debugging)
+	//displayDivisorsPerThread();
 
+
+
+	// display output
 	if (isAPrimeNumber)
 	{
 		cout << testNumber << " is a Prime Number | "<< timeTaken.asMilliseconds()<<" ms| Threads: "<< nThreads<<"\n";
@@ -92,27 +94,26 @@ void BaseRunner::run()
 }
 void BaseRunner::processEvents()
 {
-//	for (int i = 0; i < nThreads; i++)
-//	{
-//		// create thread
-//		// instantiate thread (number range)
-//		// add thread to list
-//		// thread start
-//
-//
-//	}
 
-	//display output + processing time
 }
 
 void BaseRunner::update(sf::Time elapsedTime) 
 {
-	/*GameObjectManager::getInstance()->update(elapsedTime);*/
+
 }
 
 void BaseRunner::render() 
 {
-	/*this->window.clear();
-	GameObjectManager::getInstance()->draw(&this->window);
-	this->window.display();*/
+
+}
+
+void BaseRunner::displayDivisorsPerThread()
+{
+	for (int i = 0; i < checkerThreadList.size(); i++)
+	{
+		for (int j = 0; j < checkerThreadList[i]->divisorList.size(); j++)
+		{
+			std::cout << "Thread: " << checkerThreadList[i]->id << " | Divisor: " << checkerThreadList[i]->divisorList[j] << std::endl;
+		}
+	}
 }

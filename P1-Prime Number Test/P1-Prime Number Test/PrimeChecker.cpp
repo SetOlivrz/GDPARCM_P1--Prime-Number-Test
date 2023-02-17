@@ -12,35 +12,34 @@ PrimeChecker::PrimeChecker(int id, int interval, int given)
 
 void PrimeChecker::run()
 {
+	// delay
 	IETThread::sleep(500);
 
 	int startingDivisor = 2 + id;
-	//int currentDivisor = 1;
 
-	//int i = 0;
-	//std::cout << "Thread: " << id << "| Current Divisor" << startingDivisor << std::endl;
 	for (int currentDivisor = startingDivisor; currentDivisor < givenNumber; currentDivisor += interval)
 	{
-		//currentDivisor = (interval * index) + (2 + id);
-		//std::cout <<"Thread: " << id << "| Current Divisor" << currentDivisor << std::endl;
+		// add divisor to list (use only in small test numbers to avoid longer runtime [n < 1000])
 		//divisorList.push_back(currentDivisor);
+
+		// prime checker
 		if (givenNumber % currentDivisor == 0 && currentDivisor != givenNumber)
 		{
 			isPrime = false;
 		}
-		//i++;
 
+		// break for loop when the next divisor + interval > givenNumber
 		if (currentDivisor + interval < currentDivisor)
+		{
+			std::cout << "value exceeded its datatype value limit\n";
 			break;
+		}
+			
 	}
-	/*if(isPrime)
-	std::cout << "In Thread 1: Prime " << isPrime << std::endl;
-
-	else
-	std::cout << "In Thread 1: Not Prime " << isPrime << std::endl;*/
 
 	isFinished = true;
 
+	//uncomment when viewing divisors
 	delete this;
 	
 
