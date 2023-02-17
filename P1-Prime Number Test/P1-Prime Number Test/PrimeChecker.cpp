@@ -7,7 +7,7 @@ PrimeChecker::PrimeChecker(int id, int interval, int given)
 	this->interval = interval;
 	this->givenNumber = given;
 
-	std::cout << "created thread with id: " << id << ", interval: " << interval << ", given: " << given << std::endl;
+	//std::cout << "created thread with id: " << id << ", interval: " << interval << ", given: " << given << std::endl;
 }
 
 void PrimeChecker::run()
@@ -31,7 +31,7 @@ void PrimeChecker::run()
 		// break for loop when the next divisor + interval > givenNumber
 		if (currentDivisor + interval < currentDivisor)
 		{
-			std::cout << "value exceeded its datatype value limit\n";
+			//std::cout << "value exceeded its datatype value limit\n";
 			break;
 		}
 			

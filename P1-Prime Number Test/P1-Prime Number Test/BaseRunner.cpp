@@ -10,8 +10,17 @@ BaseRunner::BaseRunner()
 	// TEST VALUES
 	// int = 2147483647 (max)
 	// long = (max)
-	this->nThreads = 2;
-	this->testNumber = 1000000;
+	this->nThreads = 256;
+
+	// NOT PRIME
+	//this->testNumber = 1000000;
+	//this->testNumber = 100000000;
+	//this->testNumber = 2000000000;
+
+	// PRIME
+	//this->testNumber = 1000003;
+	//this->testNumber = 100000007;
+	this->testNumber = 2147483647;
 }
 
 void BaseRunner::run()
@@ -34,13 +43,17 @@ void BaseRunner::run()
 		PrimeChecker* checkerInstance = new PrimeChecker(i, nThreads, testNumber);
 		// add in thread list
 		checkerThreadList.push_back(checkerInstance);
+	}
+
+	startTime = clock.getElapsedTime();
+	for (int i = 0; i < nThreads; i++)
+	{
 		// run thread
 		checkerThreadList[i]->start();
 
 	}
-
 	// start time
-	startTime = clock.getElapsedTime();
+	
 	do {
 		isAllFinished = true;
 		//cout << testNumber << " still computing\n";
