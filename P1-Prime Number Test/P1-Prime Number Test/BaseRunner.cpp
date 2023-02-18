@@ -10,7 +10,7 @@ BaseRunner::BaseRunner()
 	// TEST VALUES
 	// int = 2147483647 (max)
 	// long = (max)
-	this->nThreads = 256;
+	this->nThreads = 1;
 
 	// NOT PRIME
 	//this->testNumber = 1000000;
@@ -36,7 +36,7 @@ void BaseRunner::run()
 
 	bool isAllFinished;
 
-
+	// CREATE N THREADS
 	for (int i = 0; i < nThreads; i++)
 	{
 		// instantiate Prime checker
@@ -45,18 +45,17 @@ void BaseRunner::run()
 		checkerThreadList.push_back(checkerInstance);
 	}
 
+	// START TIMER
 	startTime = clock.getElapsedTime();
 	for (int i = 0; i < nThreads; i++)
 	{
 		// run thread
 		checkerThreadList[i]->start();
-
 	}
-	// start time
-	
+
+	// CHECKER
 	do {
 		isAllFinished = true;
-		//cout << testNumber << " still computing\n";
 		for (int i = 0; i < checkerThreadList.size(); i++)
 		{
 			// modify the value when not Finished
@@ -69,7 +68,7 @@ void BaseRunner::run()
 		}
 	} while (!isAllFinished);
 
-	// end time
+	// END TIME
 	endTime = clock.getElapsedTime();
 
 	// compute total time elapsed
@@ -77,8 +76,7 @@ void BaseRunner::run()
 
 	endTime = startTime;
 
-
-
+	// CHECKER FOR PRIME
 	isAPrimeNumber = true;
 	for (int i = 0; i < checkerThreadList.size(); i++)
 	{
@@ -92,9 +90,7 @@ void BaseRunner::run()
 	// display thread divisors (Debugging)
 	//displayDivisorsPerThread();
 
-
-
-	// display output
+	// DISPLAY OUTPUT
 	if (isAPrimeNumber)
 	{
 		cout << testNumber << " is a Prime Number | "<< timeTaken.asMilliseconds()<<" ms| Threads: "<< nThreads<<"\n";
