@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "PrimeChecker.h"
 
 using namespace std;
 class BaseRunner : private sf::NonCopyable
@@ -14,11 +15,18 @@ public:
 
 private:
 	
-	sf::RenderWindow		window;
+	sf::RenderWindow window;
 
 	void render();
+	void displayDivisorsPerThread();
 	void processEvents();
 	void update(sf::Time elapsedTime);
+
+	vector<PrimeChecker*>checkerThreadList;
+
+	int nThreads = 0;
+	int testNumber = 0;
+	bool isAPrimeNumber = false;
 };
 
 

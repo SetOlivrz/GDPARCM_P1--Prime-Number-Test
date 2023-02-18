@@ -1,72 +1,128 @@
 #include "BaseRunner.h"
-#include  "GameObjectManager.h"
-#include "BGObject.h"
-#include "TextureManager.h"
-#include "TextureDisplay.h"
-#include "FPSCounter.h"
 
 /// <summary>
 /// This demonstrates a running parallax background where after X seconds, a batch of assets will be streamed and loaded.
 /// </summary>
 const sf::Time BaseRunner::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
 
-BaseRunner::BaseRunner() :
-	window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "HO: Entity Component", sf::Style::Close) {
-	//load initial textures
-	TextureManager::getInstance()->loadFromAssetList();
+BaseRunner::BaseRunner()
+{
+	// TEST VALUES
+	// int = 2147483647 (max)
+	// long = (max)
+	this->nThreads = 1;
 
-	//load objects
-	BGObject* bgObject = new BGObject("BGObject");
-	GameObjectManager::getInstance()->addObject(bgObject);
+	// NOT PRIME
+	//this->testNumber = 1000000;
+	//this->testNumber = 100000000;
+	//this->testNumber = 2000000000;
 
-	TextureDisplay* display = new TextureDisplay();
-	GameObjectManager::getInstance()->addObject(display);
-
-	FPSCounter* fpsCounter = new FPSCounter();
-	GameObjectManager::getInstance()->addObject(fpsCounter);
+	// PRIME
+	//this->testNumber = 1000003;
+	//this->testNumber = 100000007;
+	this->testNumber = 2147483647;
 }
 
-void BaseRunner::run() {
+void BaseRunner::run()
+{
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	while (this->window.isOpen())
+
+	sf::Time startTime = sf::Time::Zero;
+	sf::Time endTime = sf::Time::Zero;
+
+	// elapsed time for the computation process
+	sf::Time timeTaken = sf::Time::Zero;
+
+	bool isAllFinished;
+
+	// CREATE N THREADS
+	for (int i = 0; i < nThreads; i++)
 	{
-		sf::Time elapsedTime = clock.restart();
-		timeSinceLastUpdate += elapsedTime;
-		while (timeSinceLastUpdate > TIME_PER_FRAME)
-		{
-			timeSinceLastUpdate -= TIME_PER_FRAME;
-
-			processEvents();
-			//update(TIME_PER_FRAME);
-			update(elapsedTime);
-		}
-
-		render();
+		// instantiate Prime checker
+		PrimeChecker* checkerInstance = new PrimeChecker(i, nThreads, testNumber);
+		// add in thread list
+		checkerThreadList.push_back(checkerInstance);
 	}
-}
 
+	// START TIMER
+	startTime = clock.getElapsedTime();
+	for (int i = 0; i < nThreads; i++)
+	{
+		// run thread
+		checkerThreadList[i]->start();
+	}
+
+	// CHECKER
+	do {
+		isAllFinished = true;
+		for (int i = 0; i < checkerThreadList.size(); i++)
+		{
+			// modify the value when not Finished
+			if (!checkerThreadList[i]->isFinished)
+			{
+				isAllFinished = false;
+				
+				break;
+			}
+		}
+	} while (!isAllFinished);
+
+	// END TIME
+	endTime = clock.getElapsedTime();
+
+	// compute total time elapsed
+	timeTaken = endTime - startTime;
+
+	endTime = startTime;
+
+	// CHECKER FOR PRIME
+	isAPrimeNumber = true;
+	for (int i = 0; i < checkerThreadList.size(); i++)
+	{
+		// modify the value when false
+		if (!checkerThreadList[i]->isPrime)
+		{
+			isAPrimeNumber = false;
+		}
+	}
+
+	// display thread divisors (Debugging)
+	//displayDivisorsPerThread();
+
+	// DISPLAY OUTPUT
+	if (isAPrimeNumber)
+	{
+		cout << testNumber << " is a Prime Number | "<< timeTaken.asMilliseconds()<<" ms| Threads: "<< nThreads<<"\n";
+	}
+	else
+	{
+		cout << testNumber << " is NOT a Prime Number | " << timeTaken.asMilliseconds() << " ms| Threads: " << nThreads << "\n";
+	}
+	
+}
 void BaseRunner::processEvents()
 {
-	sf::Event event;
-	if (this->window.pollEvent(event)) {
-		switch (event.type) {
-		
-		default: GameObjectManager::getInstance()->processInput(event); break;
-		case sf::Event::Closed:
-			this->window.close();
-			break;
 
+}
+
+void BaseRunner::update(sf::Time elapsedTime) 
+{
+
+}
+
+void BaseRunner::render() 
+{
+
+}
+
+void BaseRunner::displayDivisorsPerThread()
+{
+	for (int i = 0; i < checkerThreadList.size(); i++)
+	{
+		for (int j = 0; j < checkerThreadList[i]->divisorList.size(); j++)
+		{
+			std::cout << "Thread: " << checkerThreadList[i]->id << " | Divisor: " << checkerThreadList[i]->divisorList[j] << std::endl;
 		}
 	}
-}
-
-void BaseRunner::update(sf::Time elapsedTime) {
-	GameObjectManager::getInstance()->update(elapsedTime);
-}
-
-void BaseRunner::render() {
-	this->window.clear();
-	GameObjectManager::getInstance()->draw(&this->window);
-	this->window.display();
 }
